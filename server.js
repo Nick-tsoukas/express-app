@@ -3,12 +3,12 @@ var bodyParser = require("body-parser");
 var path = require("path");
 
 var app = express();
-var   PORT = 3000;
+var PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
 
-var data = [
+var friendsArray = [
   {
     name: 'nick',
     money: 'none'
@@ -16,7 +16,14 @@ var data = [
 ];
 
 app.get("/", function(req,res) {
-  return res.json(data);
+  res.sendFile(path.join(__dirname, "./index.html"));
+});
+
+app.post("/api/friends", function(req, res) {
+  var newFriend = req.body;
+  // newcharacter.routeName = newcharacter.name.replace(/\s+/g, "").toLowerCase();
+  friendsArray.push(newFriend);
+  res.json(newFriend);
 });
 
 app.listen(PORT, function() {
